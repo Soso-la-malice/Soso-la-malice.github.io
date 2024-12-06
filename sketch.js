@@ -1,8 +1,6 @@
 let shape, img;
 let mdl = [], UV = [];
-let index = 0, index2 = 1, index3 = 2;
-let rdmx = 0, rdmy = 0, rdmx2 = 0, rdmy2 = 0, rdmx3 = 0, rdmy3 = 0;
-let NumbR = 3;
+let rocks = [];
 
 function preload() {
   Rock = loadModel('/assets/ROCKS/stone_2.obj', true);
@@ -24,23 +22,30 @@ function setup() {
   canvas.style('z-index', '0');
   frameRate(60);
 
-  NumbR = floor(random(1, 4));
-
   mdl = [Rock, Rock2, Rock3, Rock4];
   UV = [RockUV, RockUV2, RockUV3, RockUV4];
-  setRandomPositions();
+
+  // Start with one rock
+  addRock();
+
+  noStroke();
 }
 
 function draw() {
   background(255, 2);
   ambientLight(255);
-  //orbitControl();
-  stroke(0);
-  strokeWeight(0);
 
-  if (NumbR > 0) RCK(rdmx, rdmy, index);
-  if (NumbR > 1) RCK(rdmx2, rdmy2, index2);
-  if (NumbR > 2) RCK(rdmx3, rdmy3, index3);
+  // Draw each rock
+  for (let rock of rocks) {
+    push();
+    translate(rock.x, rock.y);
+    rotateX(rock.rotationX + millis() / 1000);
+    rotateY(rock.rotationY + millis() / 1000);
+    rotateZ(rock.rotationZ + millis() / 1000);
+    texture(UV[rock.index]);
+    model(mdl[rock.index]);
+    pop();
+  }
 }
 
 function windowResized() {
@@ -48,31 +53,26 @@ function windowResized() {
 }
 
 function mousePressed() {
-  NumbR = floor(random(1, 4));  // Randomly show 1 to 3 rocks
-  cycleIndices();
-  setRandomPositions();
+  // Add a new rock
+  addRock();
 }
 
-function RCK(RX, RY, indx) {
-  push();
-  translate(RX, RY);
-  rotateY(millis() / 1000);
-  texture(UV[indx]);
-  model(mdl[indx]);
-  pop();
+function addRock() {
+  let newRock = {
+    x: random(-width / 2.5, width / 2.5),
+    y: random(-height / 2.5, height / 2.5),
+    index: floor(random(mdl.length)),
+    rotationX: random(TWO_PI),
+    rotationY: random(TWO_PI),
+    rotationZ: random(TWO_PI)
+  };
+  rocks.push(newRock);
 }
 
-function cycleIndices() {
-  index = (index + 1) % mdl.length;
-  index2 = (index2 + 1) % mdl.length;
-  index3 = (index3 + 1) % mdl.length;
-}
-
-function setRandomPositions() {
-  rdmx = random(-width / 2.5, width / 2.5);
-  rdmy = random(-height / 2.5, height / 2.5);
-  rdmx2 = random(-width / 2.5, width / 2.5);
-  rdmy2 = random(-height / 2.5, height / 2.5);
-  rdmx3 = random(-width / 2.5, width / 2.5);
-  rdmy3 = random(-height / 2.5, height / 2.5);
+function keyPressed() {
+  // Reset rocks if "R" key is pressed
+  if (key === 'r' || key === 'R') {
+    clear();
+    rocks = []; // Clear the rocks array
+  }
 }
