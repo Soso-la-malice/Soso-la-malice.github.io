@@ -71,8 +71,6 @@ function addRock() {
 
 function keyPressed() {
   // Reset rocks if "R" key is pressed
-  if (key === 'r' || key === 'R') {
     clear();
     rocks = []; // Clear the rocks array
-  }
 }
