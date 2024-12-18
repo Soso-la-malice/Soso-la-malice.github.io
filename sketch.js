@@ -19,7 +19,7 @@ function preload() {
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.position(0, 0, 'fixed');
-  canvas.style('z-index', '0');
+  canvas.style('z-index', '-1');
   frameRate(60);
 
   mdl = [Rock, Rock2, Rock3, Rock4];
