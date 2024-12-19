@@ -14,6 +14,9 @@ function preload() {
 
   Rock4 = loadModel('/assets/ROCKS/stone_14.obj', true);
   RockUV4 = loadImage('/assets/ROCKS/rock_14_basecolor.jpg');
+
+  Rock5 = loadModel('/assets/ROCKS/stone_22.obj', true);
+  RockUV5 = loadImage('/assets/ROCKS/rock_22_basecolor.jpg');
 }
 
 function setup() {
@@ -22,8 +25,8 @@ function setup() {
   canvas.style('z-index', '-1');
   frameRate(60);
 
-  mdl = [Rock, Rock2, Rock3, Rock4];
-  UV = [RockUV, RockUV2, RockUV3, RockUV4];
+  mdl = [Rock, Rock2, Rock3, Rock4, Rock5];
+  UV = [RockUV, RockUV2, RockUV3, RockUV4, RockUV5];
 
   // Start with one rock
   addRock();
@@ -32,7 +35,6 @@ function setup() {
 }
 
 function draw() {
-  background(255, 2);
   ambientLight(255);
 
   // Draw each rock
@@ -46,6 +48,8 @@ function draw() {
     model(mdl[rock.index]);
     pop();
   }
+
+  filter(BLUR,map(mouseY,0,height,-2,10));
 }
 
 function windowResized() {
@@ -59,8 +63,8 @@ function mousePressed() {
 
 function addRock() {
   let newRock = {
-    x: random(-width / 2.5, width / 2.5),
-    y: random(-height / 2.5, height / 2.5),
+    x: random(-width / 2, width / 2),
+    y: random(-height / 2, height / 2),
     index: floor(random(mdl.length)),
     rotationX: random(TWO_PI),
     rotationY: random(TWO_PI),
