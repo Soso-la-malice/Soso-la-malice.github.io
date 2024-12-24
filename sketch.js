@@ -49,7 +49,7 @@ function draw() {
     pop();
   }
 
-  filter(BLUR,map(mouseY,0,height,-2,10));
+  //filter(BLUR,map(mouseY,0,height,-2,10));
 }
 
 function windowResized() {
